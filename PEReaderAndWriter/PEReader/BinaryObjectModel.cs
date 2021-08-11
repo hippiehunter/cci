@@ -12,6 +12,15 @@ using Microsoft.Cci.MetadataReader.PEFile;
 
 namespace Microsoft.Cci.MetadataReader.ObjectModelImplementation {
 
+    public static class SignatureHelper
+    {
+        public static IMethodBody GetBody(this IMethodDefinition def, uint signatureToken)
+        {
+            return (def as MethodDefinition).GetBodyWithLocalSignature(signatureToken);
+        }
+    }
+
+
   #region Base Objects for Object Model
 
   internal interface IMetadataReaderModuleReference : IModuleReference {
@@ -2093,6 +2102,12 @@ namespace Microsoft.Cci.MetadataReader.ObjectModelImplementation {
         return body;
       }
     }
+
+        public IMethodBody GetBodyWithLocalSignature(uint localSignature)
+        {
+            return this.PEFileToObjectModel.GetMethodBody(this, localSignature);
+        }
+
     IMethodBody body;
 
     public abstract IEnumerable<IGenericMethodParameter> GenericParameters { get; }

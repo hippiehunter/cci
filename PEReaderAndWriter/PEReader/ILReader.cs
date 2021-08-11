@@ -506,9 +506,9 @@ namespace Microsoft.Cci.MetadataReader.MethodBody {
       this.EndOfMethodOffset = (uint)methodIL.EncodedILMemoryBlock.Length;
       this.MethodBody = new MethodBody(methodDefinition, methodIL.LocalVariablesInited, methodIL.MaxStack, this.EndOfMethodOffset);
     }
-
-    bool LoadLocalSignature() {
-      uint locVarRID = this.MethodIL.LocalSignatureToken & TokenTypeIds.RIDMask;
+    
+    bool LoadLocalSignature(uint signatureToken) {
+      uint locVarRID = signatureToken & TokenTypeIds.RIDMask;
       if (locVarRID != 0x00000000) {
         StandAloneSigRow sigRow = this.PEFileToObjectModel.PEFileReader.StandAloneSigTable[locVarRID];
         //  TODO: error checking offset in range
@@ -522,7 +522,24 @@ namespace Microsoft.Cci.MetadataReader.MethodBody {
       return true;
     }
 
-    string GetUserStringForToken(
+        bool LoadLocalSignature()
+        {
+            uint locVarRID = this.MethodIL.LocalSignatureToken & TokenTypeIds.RIDMask;
+            if (locVarRID != 0x00000000)
+            {
+                StandAloneSigRow sigRow = this.PEFileToObjectModel.PEFileReader.StandAloneSigTable[locVarRID];
+                //  TODO: error checking offset in range
+                MemoryBlock signatureMemoryBlock = this.PEFileToObjectModel.PEFileReader.BlobStream.GetMemoryBlockAt(sigRow.Signature);
+                //  TODO: Error checking enough space in signature memoryBlock.
+                MemoryReader memoryReader = new MemoryReader(signatureMemoryBlock);
+                //  TODO: Check if this is really local var signature there.
+                LocalVariableSignatureConverter locVarSigConv = new LocalVariableSignatureConverter(this.PEFileToObjectModel, this.MethodBody, memoryReader);
+                this.MethodBody.SetLocalVariables(locVarSigConv.LocalVariables);
+            }
+            return true;
+        }
+
+        string GetUserStringForToken(
       uint token
     ) {
       if ((token & TokenTypeIds.TokenTypeMask) != TokenTypeIds.String) {
