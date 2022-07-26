@@ -47,7 +47,7 @@ namespace Microsoft.Cci {
         return false;
 #else
 #if __MonoCS__
-        IAssemblyEnum assemblyEnum = new MonoAssemblyEnum();
+        return false;
 #else
         if (!GlobalAssemblyCache.FusionLoaded) {
           GlobalAssemblyCache.FusionLoaded = true;
@@ -59,7 +59,7 @@ namespace Microsoft.Cci {
         IAssemblyEnum assemblyEnum;
         int rc = GlobalAssemblyCache.CreateAssemblyEnum(out assemblyEnum, null, null, ASM_CACHE.GAC, 0);
         if (rc < 0 || assemblyEnum == null) return false;
-#endif
+
         IApplicationContext applicationContext;
         IAssemblyName currentName;
         while (assemblyEnum.GetNextAssembly(out applicationContext, out currentName, 0) == 0) {
@@ -76,6 +76,7 @@ namespace Microsoft.Cci {
           }
         }
         return false;
+        #endif
 #endif
       }
     }

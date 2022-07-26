@@ -1,26 +1,14 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{A6A31B03-7C3D-4DE6-AA73-BE88116BC40A}</ProjectGuid>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Microsoft.Cci.Pdb</RootNamespace>
     <AssemblyName>Microsoft.Cci.PdbReader</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
     <SignAssembly>true</SignAssembly>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -38,16 +26,10 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <CodeContractsAssemblyMode>0</CodeContractsAssemblyMode>
     <AssemblyOriginatorKeyFile>..\..\Common\InterimKey.snk</AssemblyOriginatorKeyFile>
-    <TargetFrameworkProfile />
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;NO_METADATA_HELPER</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <NoWarn>649</NoWarn>
     <DocumentationFile>bin\Debug\Microsoft.Cci.PdbReader.XML</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
@@ -87,12 +69,7 @@
     <CodeContractsDisjunctiveRequires>True</CodeContractsDisjunctiveRequires>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE;NO_METADATA_HELPER</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <NoWarn>649</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -101,47 +78,12 @@
       <Link>Build\Version.cs</Link>
     </Compile>
     <Compile Include="..\..\common\include\DietCollection.cs" />
-    <Compile Include="BitAccess.cs" />
-    <Compile Include="BitSet.cs" />
-    <Compile Include="CvInfo.cs" />
-    <Compile Include="DataStream.cs" />
-    <Compile Include="DbiDbgHdr.cs" />
-    <Compile Include="DbiHeader.cs" />
-    <Compile Include="DbiModuleInfo.cs" />
-    <Compile Include="DbiSecCon.cs" />
-    <Compile Include="IntHashTable.cs" />
-    <Compile Include="MsfDirectory.cs" />
-    <Compile Include="PdbConstant.cs" />
-    <Compile Include="PdbDebugException.cs" />
-    <Compile Include="PdbException.cs" />
-    <Compile Include="PdbFile.cs" />
-    <Compile Include="PdbFileHeader.cs" />
     <Compile Include="PdbFormatProvider.cs" Condition="'$(EnablePortablePdb)' == 'true'" />
-    <Compile Include="PdbFunction.cs" />
-    <Compile Include="PdbInfo.cs" />
-    <Compile Include="PdbLine.cs" />
-    <Compile Include="PdbLines.cs" />
-    <Compile Include="PdbReader.cs" />
-    <Compile Include="PdbScope.cs" />
-    <Compile Include="PdbSlot.cs" />
-    <Compile Include="PdbSource.cs" />
-    <Compile Include="PdbTokenLine.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SourceLocationProvider.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CoreObjectModel\MetadataModel\MetadataModel.csproj">
-      <Project>{33CAB640-0D03-43DF-81BD-22CDC6C0A597}</Project>
-      <Name>MetadataModel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\CoreObjectModel\SourceModel\SourceModel.csproj">
-      <Project>{4B0054FD-124A-4037-9965-BDB55E6BF389}</Project>
-      <Name>SourceModel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\PEReaderAndWriter\PEReader\PeReader.csproj">
-      <Project>{34B9A0CE-DF18-4CBC-8F7A-90C2B74338D5}</Project>
-      <Name>PeReader</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\..\CoreObjectModel\MetadataModel\MetadataModel.csproj" />
+    <ProjectReference Include="..\..\CoreObjectModel\SourceModel\SourceModel.csproj" />
+    <ProjectReference Include="..\..\PEReaderAndWriter\PEReader\PeReader.csproj" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -161,14 +103,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System" />
+    <Compile Remove="PdbFormatProvider.cs" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
